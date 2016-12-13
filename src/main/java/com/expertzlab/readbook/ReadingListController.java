@@ -18,6 +18,11 @@ import java.util.List;
 public class ReadingListController {
 
     private ReadingListRepo repo;
+    @Autowired
+    private LogAssociated logger;
+
+    @Autowired
+    private SpecialLogAssociated spLogger;
 
     @Autowired
     public ReadingListController(ReadingListRepo repo){
@@ -30,6 +35,7 @@ public class ReadingListController {
         if(bookList != null){
             model.addAttribute("books",bookList);
         }
+        logger.writeLog("book read count - "+ bookList.size());
         return "readingList";
     }
 
@@ -38,6 +44,7 @@ public class ReadingListController {
             @PathVariable("reader") String reader, Book book) {
         book.setReader(reader);
         repo.save(book);
+        spLogger.writeLog("saved");
         return "redirect:/{reader}";
     }
 }
