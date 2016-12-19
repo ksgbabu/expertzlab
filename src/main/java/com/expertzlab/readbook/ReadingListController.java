@@ -1,5 +1,8 @@
 package com.expertzlab.readbook;
 
+import ch.qos.logback.classic.spi.LoggingEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class ReadingListController {
+
+    private Logger backlogger = LoggerFactory.getLogger(ReadingListController.class);
 
     private ReadingListRepo repo;
     @Autowired
@@ -36,6 +41,7 @@ public class ReadingListController {
             model.addAttribute("books",bookList);
         }
         logger.writeLog("book read count - "+ bookList.size());
+        backlogger.debug("Controller called {}",this.getClass().getName());
         return "readingList";
     }
 
