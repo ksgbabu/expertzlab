@@ -1,18 +1,26 @@
 
-import org.springframework.beans.factory.annotation.Autowired; import org.springframework.context.annotation.Configuration;
+import com.expertzlab.readbook.ReadingListRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.
-        builders.AuthenticationManagerBuilder; import org.springframework.security.config.annotation.web.builders.
+        builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.
         HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration. EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration. WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails; import org.springframework.security.core.userdetails.UserDetailsService; import org.springframework.security.core.userdetails.
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.
         UsernameNotFoundException;
+
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
-    private ReaderRepository readerRepository;
+    private ReadingListRepo readingListRepo;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -20,7 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").access("hasRole('READER')")
                 .antMatchers("/**").permitAll()
-        Require READER access
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -29,33 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(
-            Set login form path
             AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(new UserDetailsService() {
                     @Override
                     public UserDetails loadUserByUsername(String username)
                             throws UsernameNotFoundException {
-                        return readerRepository.findOne(username);
+                        //return readingListRepo.findOne(username);
+                        return null;
                     }
                 });
-        Define custom UserDetailsService
     }
 }
-
-.and()
-        .formLogin()
-        .loginPage("/login")
-        .failureUrl("/login?error=true");
-        }
-@Override
-protected void configure(
-        AuthenticationManagerBuilder auth)throws Exception{
-        auth
-        .userDetailsService(new UserDetailsService(){
-@Override
-public UserDetails loadUserByUsername(String username)
-        throws UsernameNotFoundException{
-        return readerRepository.findOne(username);
-        }});
-        }}
