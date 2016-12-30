@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/read")
 public class ReadingListController {
 
     private Logger backlogger = LoggerFactory.getLogger(ReadingListController.class);
