@@ -179,19 +179,20 @@
 
                     <div class="medium-9 small-12 columns">
                     	<h2>Please fill the form below to contact us</h2>
+                        <form name="contact" action="">
                         <div class="contact-form">
 
                         	<div class="row">
                             	<div class="medium-6 small-12 columns">
                                 	<label>
                                     	Your name*
-                                        <input type="text" value="" placeholder="Your name here..." />
+                                        <input name="firstName" type="text" value="" placeholder="Your name here..." />
                                     </label>
                                 </div>
                                 <div class="medium-6 small-12 columns">
                                 	<label>
                                     	Your Last Name
-                                        <input type="text" value="" placeholder="Your last name here..." />
+                                        <input name="lastName" type="text" value="" placeholder="Your last name here..." />
                                     </label>
                                 </div>
                             </div><!-- Row Ends /-->
@@ -200,13 +201,13 @@
                             	<div class="medium-6 small-12 columns">
                                 	<label>
                                     	Your Email
-                                        <input type="text" value="" placeholder="Your email address ..." />
+                                        <input name="email" type="text" value="" placeholder="Your email address ..." />
                                     </label>
                                 </div>
                                 <div class="medium-6 small-12 columns">
                                 	<label>
                                     	Phone *
-                                        <input type="text" value="" placeholder="Your contact phone ..." />
+                                        <input name="phone" type="text" value="" placeholder="Your contact phone ..." />
                                     </label>
                                 </div>
                             </div><!-- Row Ends /-->
@@ -216,14 +217,16 @@
                             	<div class="medium-12 small-12 columns">
                                 	<label>
                                     	Your Comments
-                                        <textarea rows="10" placeholder="Your message ..."></textarea>
+                                        <textarea name="comments" rows="10" placeholder="Your message ..."></textarea>
                                     </label>
-                                	<input type="submit" class="button primary" value="Send your message" />
+                                	<input name="result" type="submit" class="button primary" value="Send your message" />
                                 </div>
                             </div><!-- Row Ends /-->
 
                         </div><!-- Contact form /-->
+                        </form>
                     </div><!-- Right Column Ends /-->
+
                     <div class="clearfix"></div>
                 </div>
                 <!-- Contact Content Area /-->
@@ -379,5 +382,41 @@
 
     <!-- Webful JS -->
     <script src="js/webful.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+    <script>
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDyIasIt4IJt4T-GPsHTd2UcllNKbxIl4s",
+            authDomain: "expertzlab-c9609.firebaseapp.com",
+            databaseURL: "https://expertzlab-c9609.firebaseio.com",
+            projectId: "expertzlab-c9609",
+            storageBucket: "expertzlab-c9609.appspot.com",
+            messagingSenderId: "682101854788"
+        };
+        firebase.initializeApp(config);
+
+        $( "form" ).on( "submit", function( event ) {
+            event.preventDefault();
+            var phoneId = $("form").prop("phone").value;
+
+            firebase.auth().signInWithEmailAndPassword('gireesh.babu@expertzlab.com', 'expert@3627').catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
+            });
+           var resultRef = firebase.database().ref('enquiry/' + phoneId).set({
+                firstName:  $("form").prop("firstName").value,
+                lastName:  $("form").prop("lastName").value,
+                email: $("form").prop("email").value,
+                phone: $("form").prop("phone").value,
+                comments: $("form").prop("comments").value
+            });
+            alert("Saved");
+        });
+    </script>
 </body>
 </html>
